@@ -1,0 +1,33 @@
+ssh_authorized_keys:
+- "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDVC3AS/n9wSUeRsU1O5ZiMXos8sXKDHYQCoZbuAFQchekwfg7ZINAPiq1wPxPW8nEeVJe9Lgq6CufMKh29XNGeMsPfny6RnGSQ8Rgws5jmpHYNazjODPXbK
+write_files:
+- encoding: ""
+  content: |-
+    #!/bin/bash
+    vconfig add eth0 112
+  owner: root
+  path: /etc/local.d/add-vlans.start
+  permissions: '0755'
+- encoding: ""
+  content: |-
+    #!/bin/bash
+    rm -rf /var/lib/cni/networks/cbr0/*
+    rm -rf /var/lib/cni/multus/*
+  owner: root
+  path: /etc/local.d/clean-ips.start
+  permissions: '0755'
+- encoding: ""
+  content: |-
+    #!/bin/bash
+    mkdir -p /etc/cni/net.d/multus.d/
+    ln -s /var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig /etc/cni/net.d/multus.d/multus.kubeconfig
+    cp /opt/cni/bin/multus /var/lib/rancher/k3s/data/$(ls -tr1 /var/lib/rancher/k3s/data | tail -1)/bin
+  owner: root
+  path: /etc/local.d/add-multus-mods.start
+  permissions: '0755'
+
+k3os:
+  password: rancher
+  k3s_args:
+    - server
+    - "--disable=traefik"
