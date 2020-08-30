@@ -1,27 +1,29 @@
 ssh_authorized_keys:
-- "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDVC3AS/n9wSUeRsU1O5ZiMXos8sXKDHYQCoZbuAFQchekwfg7ZINAPiq1wPxPW8nEeVJe9Lgq6CufMKh29XNGeMsPfny6RnGSQ8Rgws5jmpHYNazjODPXbK
+- "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDVC3AS/n9wSUeRsU1O5ZiMXos8sXKDHYQCoZbuAFQchekwfg7ZINAPiq1wPxPW8nEeVJe9Lgq6CufMKh29XNGeMsPfny6RnGSQ8Rgws5jmpHYNazjODPXbKo4PwtQljq7jvpZs3DDmtfteB5XhQW48pSuSkfurex/VZTq324TQLbYFV4DwAdwufFFvONS80qmXIlGDqE/lvOPfrzCfRY+z5vpasvuyYs6Voy0OEVQGcrpeWWiaG/uT5idMYfS4iLOCLh9dV1JYlKED7yPTZqZdd5SqoSI47WcSbPahLK1NUG4fP6c9eiHCDzFrPzx+9KhXtMTi8CZSkZkbVxZkSCuX ronblom@cs-rinis-562-tbe.rinis.nl"
 write_files:
 - encoding: ""
   content: |-
     #!/bin/bash
     vconfig add eth0 112
+    # Cleanup ip's
+    rm -rf /var/lib/cni/networks/cbr0/*
+    rm -rf /var/lib/cni/multus/*
   owner: root
-  path: /etc/local.d/add-vlans.start
+  path: /etc/local.d/networking.start
   permissions: '0755'
 - encoding: ""
   content: |-
     #!/bin/bash
-    rm -rf /var/lib/cni/networks/cbr0/*
-    rm -rf /var/lib/cni/multus/*
+    ln -vs /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime
+    echo 'Europe/Amsterdam' > /etc/timezone
   owner: root
-  path: /etc/local.d/clean-ips.start
+  path: /etc/local.d/timezone.start
   permissions: '0755'
 - encoding: ""
   content: |-
     #!/bin/bash
     mkdir -p /etc/cni/net.d/multus.d/
     ln -s /var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig /etc/cni/net.d/multus.d/multus.kubeconfig
-    cp /opt/cni/bin/multus /var/lib/rancher/k3s/data/$(ls -tr1 /var/lib/rancher/k3s/data | tail -1)/bin
   owner: root
   path: /etc/local.d/add-multus-mods.start
   permissions: '0755'
@@ -29,5 +31,7 @@ write_files:
 k3os:
   password: rancher
   k3s_args:
-    - server
-    - "--disable=traefik"
+  - server
+  - "--disable=traefik"
+#  - "--flannel-backend=none"
+
