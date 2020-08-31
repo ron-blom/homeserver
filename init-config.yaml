@@ -1,0 +1,9 @@
+ssh_authorized_keys:
+- "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDVC3AS/n9wSUeRsU1O5ZiMXos8sXKDHYQCoZbuAFQchekwfg7ZINAPiq1wPxPW8nEeVJe9Lgq6CufMKh29XNGeMsPfny6RnGSQ8Rgws5jmpHYNazjODPXbKo4PwtQljq7jvpZs3DDmtfteB5XhQW48pSuSkfurex/VZTq324TQLbYFV4DwAdwufFFvONS80qmXIlGDqE/lvOPfrzCfRY+z5vpasvuyYs6Voy0OEVQGcrpeWWiaG/uT5idMYfS4iLOCLh9dV1JYlKED7yPTZqZdd5SqoSI47WcSbPahLK1NUG4fP6c9eiHCDzFrPzx+9KhXtMTi8CZSkZkbVxZkSCuX ronblom@cs-rinis-562-tbe.rinis.nl"
+
+k3os:
+  password: rancher
+  k3s_args:
+  - server
+  - "--disable=traefik"
+
