@@ -1,13 +1,13 @@
-## Homeserver based on k3os with multus-cni
+# Homeserver based on k3os with multus-cni
 
-# VLAN's:
+### VLAN's:
 ```
 - 110: 192.168.110.0/24 Internal
 - 111: 192.168.111.0/24 Guest (Only WiFi)
 - 112: 192.168.112.0/24 Management
 ```
 
-# POD ip's and URL's:
+### POD ip's and URL's:
 ```
 192.168.112.3   omada-controller-pod    https://192.168.112.3:8043/login
 192.168.112.4   freepbx-pod             http://192.168.112.4/
@@ -34,14 +34,15 @@ scp rancher@192.168.110.2:/etc/rancher/k3s/k3s.yaml ~/.kube/config
 vi ~/.kube/config
 ```
 
-# modified multus-daemonset.yml from project: clone https://github.com/intel/multus-cni.git
+### Multus-CNI
+modified multus-daemonset.yml from project: clone https://github.com/intel/multus-cni.git
 
 `kubectl apply -f multus-daemonset.yml`
 
 kopieer multus binary to /var/lib/rancher/k3s/data/4b08ff55a6cec1960f6f97519da0ac5351986d629107a1ef4a1e216ff5579bf0/bin (from /opt/cni/bin/)
 
-Bouw: https://github.com/containernetworking/plugins.git
-dmv linux script.
+build: https://github.com/containernetworking/plugins.git
+with linux script.
 
 Copy binary’s to: /opt/cni/bin
 
