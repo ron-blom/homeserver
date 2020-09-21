@@ -27,11 +27,25 @@ write_files:
   owner: root
   path: /etc/local.d/add-multus-mods.start
   permissions: '0755'
+- encoding: ""
+  content: |-
+    /dev/cdrom	/media/cdrom	iso9660	noauto,ro 0 0
+    /dev/usbdisk	/media/usb	vfat	noauto,ro 0 0
+    /dev/sda1	/media/HD1TB	ext4	auto,rw   0 0
+  owner: root
+  path: /etc/fstab
+  permissions: '0644'
+boot_cmd:
+- "mkdir /mnt/HD1TB || echo /mnt/HD1TB exists"
+hostname: k3os
 
 k3os:
   password: rancher
   k3s_args:
   - server
   - "--disable=traefik"
-#  - "--flannel-backend=none"
-
+  modules:
+  - nvme
+  ntp_servers:
+  - 0.nl.pool.ntp.org
+  - 1.nl.pool.ntp.org
