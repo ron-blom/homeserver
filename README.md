@@ -20,6 +20,57 @@
 192.168.110.11 pihole-pod              http://192.168.110.11
 ```
 
+### Alma9 add vlan
+[root@k3os ~]# nmcli con mod enp2s0f0 ipv4.addresses 192.168.110.2/24
+[root@k3os ~]# nmcli con mod enp2s0f0 ipv4.gateway 192.168.110.1
+[root@k3os ~]# nmcli con mod enp2s0f0 ipv4.dns "8.8.8.8"
+[root@k3os ~]# nmcli con mod enp2s0f0 ipv4.dns "192.168.110.1"
+[root@k3os ~]# nmcli con mod enp2s0f0 ipv4.method manual
+
+[root@k3os ~]# nmcli connection add type vlan con-name vlan112 ifname vlan112 vlan.parent enp2s0f0 vlan.id 112
+[root@k3os ~]# nmcli con mod vlan112 ipv4.addresses 192.168.112.2/24
+[root@k3os ~]# nmcli con mod vlan112 ipv4.method manual
+
+
+### Install k3s
+[root@k3os ~]# systemctl disable firewalld --now
+
+[root@k3os ~]# curl -sfL https://get.k3s.io | sh -s - --disable=traefik
+
+Copy /etc/rancher/k3s/k3s.yaml to local ~/.kube/config
+
+### Multus-CNI
+rblom@Rons-MacBook-Air git % git clone git@github.com:k8snetworkplumbingwg/multus-cni.git
+rblom@Rons-MacBook-Air git % cd multus-cni
+
+Change deployments/multus-daemonset-thick.yml
+
+      "kubeconfig": "/var/lib/rancher/k3s/agent/etc/cni/net.d/multus.d/multus.kubeconfig"
+
+      volumes:
+        - name: cni
+          hostPath:
+            path: /var/lib/rancher/k3s/agent/etc/cni/net.d
+        - name: cnibin
+          hostPath:
+            path: /var/lib/rancher/k3s/data/current/bin
+
+rblom@Rons-MacBook-Air multus-cni % cat ./deployments/multus-daemonset.yml | kubectl apply -f -
+
+### 
+kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.26/deploy/local-path-storage.yaml
+
+### Ingress
+rblom@Rons-MacBook-Air homeserver % helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+rblom@Rons-MacBook-Air homeserver % helm install ingress-nginx ingress-nginx/ingress-nginx
+
+
+
+
+
+
+## OLD
+
 Download latest k3os-amd64.iso from https://github.com/rancher/k3os/releases
 Create bootable usb stick with k3os.iso
 
