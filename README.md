@@ -17,7 +17,9 @@
 192.168.110.8   kerberos-pod            http://192.168.110.8
 192.168.112.9   webserver-pod           http://homeserver.local or http://192.168.112.9
 192.168.110.10  cups-pod                https://192.168.110.10:631
-192.168.110.11 pihole-pod              http://192.168.110.11
+192.168.112.10  tftp-server             tftp://192.168.112.10:69
+192.168.110.11  pihole-pod              http://192.168.110.11
+192.168.110.12  squid                   http://192.168.110.12:3128
 ```
 
 ### Alma9 add vlan
