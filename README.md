@@ -10,14 +10,14 @@
 ### POD ip's and URL's:
 ```
 192.168.112.3   omada-controller-pod    https://192.168.112.3:8043/login
-192.168.112.4   freepbx-pod             http://192.168.112.4/
+192.168.114.4   freepbx-pod             http://192.168.114.4/
 192.168.110.5   squeezebox-pod          http://192.168.110.5:9000/
 192.168.110.6   dsmr-reader-pod         http://192.168.110.6/
 192.168.110.7   diyhue-pod              
 192.168.110.8   kerberos-pod            http://192.168.110.8
 192.168.112.9   webserver-pod           http://homeserver.local or http://192.168.112.9
 192.168.110.10  cups-pod                https://192.168.110.10:631
-192.168.112.10  tftp-server             tftp://192.168.112.10:69
+192.168.114.10  tftp-server             tftp://192.168.114.10:69
 192.168.110.11  pihole-pod              http://192.168.110.11
 192.168.110.12  squid                   http://192.168.110.12:3128
 ```
@@ -32,6 +32,10 @@
 [root@k3os ~]# nmcli connection add type vlan con-name vlan112 ifname vlan112 vlan.parent enp2s0f0 vlan.id 112
 [root@k3os ~]# nmcli con mod vlan112 ipv4.addresses 192.168.112.2/24
 [root@k3os ~]# nmcli con mod vlan112 ipv4.method manual
+
+[root@k3os ~]# nmcli connection add type vlan con-name vlan114 ifname vlan114 vlan.parent enp2s0f0 vlan.id 114
+[root@k3os ~]# nmcli con mod vlan114 ipv4.addresses 192.168.114.2/24
+[root@k3os ~]# nmcli con mod vlan114 ipv4.method manual
 
 
 ### Install k3s
